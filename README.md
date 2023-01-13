@@ -4,7 +4,7 @@ This script helps you to track your crypto assets value, by creating easy-to-use
 
 ## How to use
 
-You will need to fill the excel file provided in the `inputs/` folder. Here you will enter the information related to the transactions you make. A few remarks:
+You will need to fill the excel file provided in the `input/` folder. Here you will enter the information related to the transactions you make. A few remarks:
 
 - Allowable values in the `Operation` field: `Start`, `Buy`, `Sell`, `Deposit`, `Withdrawal` & `Profits`. Any other value will throw an error.
 - The `Start` operation is used to tell the script your initial balance for a given asset. If you don't specify it, the script will assume 0.
