@@ -1,17 +1,16 @@
-import datetime
 import sys
 import getopt
-
-date_today = datetime.date.today()
+import datetime
 
 def getParams(argv):
     arg_from = ""
     arg_to = ""
     arg_assets = []
-    arg_help = f"{format(argv[0])} --from 2023-01-01 --to today --assets BTC,ETH"
+    arg_input = ""
+    arg_help = f"{format(argv[0])} --from 2023-01-01 --to today --assets BTC,ETH --input ./input/input.xlsx"
 
     try:
-        opts, args = getopt.getopt(argv[1:], "hf:t:a:", ["help", "from=", "to=", "assets="])      
+        opts, args = getopt.getopt(argv[1:], "hf:t:a:i:", ["help", "from=", "to=", "assets=", "input="])      
 
     except:
         print(f"ERROR: Wrong parameters passed.\n Example of usage:\n{arg_help}")
@@ -31,11 +30,11 @@ def getParams(argv):
         elif opt in ("-a", "--assets"):
             # obtain and parse the assets list
             arg_assets = arg
+        elif opt in ("-i", "--input"):
+            # obtain the input file path
+            arg_input = arg
 
     print('From:', arg_from)
     print('To:', arg_to)
     print('Assets:', arg_assets)
-
-
-if __name__ == "__main__":
-    getParams(sys.argv)
+    print('Input:', arg_input)
