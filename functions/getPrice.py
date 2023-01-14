@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance as yfin
 from pandas_datareader import data as pdr
 
-def buildPricesTable(tokens, date_start, date_end):
+def getPrice(tokens, date_start, date_end):
     # Prepare dataframe for the prices
     prices_df = pd.DataFrame(columns = ["Date", "High", "Low", "Open", "Close", "Token"])
 
