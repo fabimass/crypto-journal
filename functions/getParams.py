@@ -1,6 +1,7 @@
 import sys
 import getopt
 import datetime
+from functions.exitScript import exitScript
 
 def getParams(argv):
     arg_from = ""
@@ -14,21 +15,31 @@ def getParams(argv):
 
     except:
         print(f"ERROR: Wrong parameters passed.\n Example of usage:\n{arg_help}")
-        sys.exit(2)
+        exitScript(2)
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             # print the help message
-            print(arg_help)  
-            sys.exit(2)
+            print(arg_help)
+            exitScript(2)
         elif opt in ("-f", "--from"):
-            # obtain the start date
+            # validate the start date
+            try:
+                datetime.datetime.strptime(arg, '%Y-%m-%d')
+            except:
+                print("ERROR: Incorrect data format, should be YYYY-MM-DD")
+                exitScript(2)
             arg_from = arg
         elif opt in ("-t", "--to"):
-            # obtain the end date
+            # validate the end date
             if (arg == "today"):
                 arg_to = datetime.date.today()
             else:
+                try:
+                    datetime.datetime.strptime(arg, '%Y-%m-%d')
+                except:
+                    print("ERROR: Incorrect data format, should be YYYY-MM-DD")
+                    exitScript(2)
                 arg_to = arg 
         elif opt in ("-a", "--assets"):
             # obtain and parse the assets list
@@ -40,15 +51,15 @@ def getParams(argv):
     # check for missing parameters
     if (arg_from == ""):
         print("ERROR: required --from parameter is missing")
-        sys.exit(2)
+        exitScript(2)
     if (arg_to == ""):
         print("ERROR: required --to parameter is missing")
-        sys.exit(2)
+        exitScript(2)
     if (len(arg_assets) == 0):
         print("ERROR: required --assets parameter is missing")
-        sys.exit(2)
+        exitScript(2)
     if (arg_input == ""):
         print("ERROR: required --input parameter is missing")
-        sys.exit(2)
+        exitScript(2)
 
     return arg_from, arg_to, arg_assets, arg_input

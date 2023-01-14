@@ -1,6 +1,7 @@
 import sys
 from functions.getParams import getParams
 from functions.buildPricesTable import buildPricesTable
+from functions.exitScript import exitScript
 
 if __name__ == "__main__":
     # Parse script parameters
@@ -11,5 +12,5 @@ if __name__ == "__main__":
     print(prices)
 
 
-    print("Script executed successfully!!\n Enter any key to exit")
-    input()
+    print("Script executed successfully!!")
+    exitScript(0)
