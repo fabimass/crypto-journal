@@ -29,7 +29,6 @@ if __name__ == "__main__":
 
     # Get trading operations
     trades_df = getTrades(input_df)
-    print(trades_df)
 
     print("Script executed successfully!!")
     exitScript(0)
