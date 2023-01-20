@@ -19,34 +19,34 @@ def getBalance(journal, tokens, start_date, end_date):
             date_i = datetime.datetime.strptime(start_date, '%Y-%m-%d')
             while date_i <= datetime.datetime(end_date.year,end_date.month,end_date.day):
                 # Look for a match for date and token
-                records = journal[wallet][(journal[wallet][xlsx_columns.date] == date_i) & ( (journal[wallet][xlsx_columns.token1] == token) | (journal[wallet][xlsx_columns.token2] == token) | (journal[wallet][xlsx_columns.tokenfee] == token) )]  
+                records = journal[wallet][(journal[wallet][xlsx_columns["date"]] == date_i) & ( (journal[wallet][xlsx_columns["token1"]] == token) | (journal[wallet][xlsx_columns["token2"]] == token) | (journal[wallet][xlsx_columns["tokenfee"]] == token) )]  
                 if not records.empty:
                     # Found a movement for the token in that date, calculate the new balance
                     for i in records.index:
                         new_balance = -1;  
-                        if (records[xlsx_columns.token1][i] == token):
-                            if (records[xlsx_columns.operation][i] in zero_operations):
-                                new_balance = records[xlsx_columns.token1_amount][i]
-                            elif (records[xlsx_columns.operation][i] in add_operations):
-                                new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns.token1_amount][i]
-                            elif (records[xlsx_columns.operation][i] in subs_operations):
-                                new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns.token1_amount][i]
-                        if (records[xlsx_columns.token2][i] == token):
-                            if (records[xlsx_columns.operation][i] in add_operations):
+                        if (records[xlsx_columns["token1"]][i] == token):
+                            if (records[xlsx_columns["operation"]][i] in zero_operations):
+                                new_balance = records[xlsx_columns["token1_amount"]][i]
+                            elif (records[xlsx_columns["operation"]][i] in add_operations):
+                                new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns["token1_amount"]][i]
+                            elif (records[xlsx_columns["operation"]][i] in subs_operations):
+                                new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["token1_amount"]][i]
+                        if (records[xlsx_columns["token2"]][i] == token):
+                            if (records[xlsx_columns["operation"]][i] in add_operations):
                                 if (new_balance == -1):
-                                    new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns.token2_amount][i]
+                                    new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["token2_amount"]][i]
                                 else:
-                                    new_balance -= records[xlsx_columns.token2_amount][i]
-                            elif (records[xlsx_columns.operation][i] in subs_operations):
+                                    new_balance -= records[xlsx_columns["token2_amount"]][i]
+                            elif (records[xlsx_columns["operation"]][i] in subs_operations):
                                 if (new_balance == -1):
-                                    new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns.token2_amount][i]
+                                    new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns["token2_amount"]][i]
                                 else:
-                                    new_balance += records[xlsx_columns.token2_amount][i]
-                        if (records[xlsx_columns.tokenfee][i] == token):
+                                    new_balance += records[xlsx_columns["token2_amount"]][i]
+                        if (records[xlsx_columns["tokenfee"]][i] == token):
                             if (new_balance == -1):
-                                new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns.tokenfee_amount][i]
+                                new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["tokenfee_amount"]][i]
                             else:
-                                new_balance -= records[xlsx_columns.tokenfee_amount][i]       
+                                new_balance -= records[xlsx_columns["tokenfee_amount"]][i]       
                 else:
                     if date_i.month == 1 and date_i.day == 1:
                         # Assign 0 as initial balance if there is no 'Start' entry for the token
