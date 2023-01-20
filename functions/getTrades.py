@@ -21,7 +21,7 @@ def getTrades(journal):
         print("OK")
 
     # Calculate the profit for each operation
-    trading.sort_values(["Token", "Date"])
+    trading = trading.sort_values(["Token", "Date"])
     for row in trading.index:
         if(row == 0 or trading.loc[row,"Token"] != trading.loc[row-1,"Token"]):
             print(f"Calculating profits for {trading.loc[row,'Token']}...")
