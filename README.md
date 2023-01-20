@@ -22,5 +22,7 @@ Once you have your excel file ready, you will run the script specifying the foll
 Example:
 
 ```
-python main.py --from 2023-01-01 --to today --assets BTC,ETH --input ./input/input.xlsx
+python main.py 2023-01-01 today BTC,ETH ./input/input.xlsx
 ```
+
+The script will create 2 csv files in the `output/` folder: `results.csv` contains the daily balance and price for each of your assets in each of your wallets, and `trades.csv` is a summary of the buy/sell transactions where you can find the cumulative profits.
