@@ -22,29 +22,45 @@ def getBalance(journal, tokens, start_date, end_date):
                 records = journal[wallet][(journal[wallet][xlsx_columns["date"]] == date_i) & ( (journal[wallet][xlsx_columns["token1"]] == token) | (journal[wallet][xlsx_columns["token2"]] == token) | (journal[wallet][xlsx_columns["tokenfee"]] == token) )]  
                 if not records.empty:
                     # Found a movement for the token in that date, calculate the new balance
-                    for i in records.index:
-                        new_balance = -1;  
+                    foundFlag = False; 
+                    for i in records.index: 
+                        # Found in token 1
                         if (records[xlsx_columns["token1"]][i] == token):
                             if (records[xlsx_columns["operation"]][i] in zero_operations):
                                 new_balance = records[xlsx_columns["token1_amount"]][i]
                             elif (records[xlsx_columns["operation"]][i] in add_operations):
-                                new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns["token1_amount"]][i]
+                                if (not foundFlag):
+                                    new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns["token1_amount"]][i]
+                                    foundFlag = True
+                                else:
+                                    new_balance += records[xlsx_columns["token1_amount"]][i]
                             elif (records[xlsx_columns["operation"]][i] in subs_operations):
-                                new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["token1_amount"]][i]
+                                if (not foundFlag):
+                                    new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["token1_amount"]][i]
+                                    foundFlag = True
+                                else:
+                                    new_balance -= records[xlsx_columns["token1_amount"]][i]
+                        
+                        # Found in token 2
                         if (records[xlsx_columns["token2"]][i] == token):
                             if (records[xlsx_columns["operation"]][i] in add_operations):
-                                if (new_balance == -1):
+                                if (not foundFlag):
                                     new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["token2_amount"]][i]
+                                    foundFlag = True
                                 else:
                                     new_balance -= records[xlsx_columns["token2_amount"]][i]
                             elif (records[xlsx_columns["operation"]][i] in subs_operations):
-                                if (new_balance == -1):
+                                if (not foundFlag):
                                     new_balance = balance.loc[len(balance.index)-1].Balance + records[xlsx_columns["token2_amount"]][i]
+                                    foundFlag = True
                                 else:
                                     new_balance += records[xlsx_columns["token2_amount"]][i]
+                        
+                        # Found in fee
                         if (records[xlsx_columns["tokenfee"]][i] == token):
-                            if (new_balance == -1):
+                            if (not foundFlag):
                                 new_balance = balance.loc[len(balance.index)-1].Balance - records[xlsx_columns["tokenfee_amount"]][i]
+                                foundFlag = True
                             else:
                                 new_balance -= records[xlsx_columns["tokenfee_amount"]][i]       
                 else:
