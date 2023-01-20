@@ -30,5 +30,8 @@ if __name__ == "__main__":
     # Get trading operations
     trades_df = getTrades(input_df)
 
+    # Output to csv file
+    outputFile(trades_df, "output/trades.csv")
+
     print("Script executed successfully!!")
     exitScript(0)
