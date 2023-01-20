@@ -15,13 +15,16 @@ def getPrice(tokens, ignore, date_start, date_end):
             pass
         else:
             print(f"Getting prices for {token}...")
-            symbol = token + "-USD"
-            temp_df = pdr.get_data_yahoo(symbol, start=date_start, end=date_end)
-            temp_df = temp_df.reset_index(level=0)
-            temp_df["Token"] = token
-            del temp_df["Volume"]
-            del temp_df["Adj Close"]
-            prices_df = pd.concat([prices_df, temp_df])
-            print("OK")
+            try:
+                symbol = token + "-USD"
+                temp_df = pdr.get_data_yahoo(symbol, start=date_start, end=date_end)
+                temp_df = temp_df.reset_index(level=0)
+                temp_df["Token"] = token
+                del temp_df["Volume"]
+                del temp_df["Adj Close"]
+                prices_df = pd.concat([prices_df, temp_df])
+                print("OK")
+            except:
+                print(f"ERROR: Something went wrong...")
 
     return prices_df
