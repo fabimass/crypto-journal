@@ -26,14 +26,14 @@ def getTrades(journal):
         if(row == 0 or trading.loc[row,"Token"] != trading.loc[row-1,"Token"]):
             print(f"Calculating profits for {trading.loc[row,'Token']}...")
             if (trading.loc[row,"Operation"] == "Buy"):
-                trading.loc[row,"Profit"] = trading.loc[row,"Value"]
-            else:
                 trading.loc[row,"Profit"] = -trading.loc[row,"Value"]
+            else:
+                trading.loc[row,"Profit"] = trading.loc[row,"Value"]
         else:
             if (trading.loc[row,"Operation"] == "Buy"):
-                trading.loc[row,"Profit"] = trading.loc[row-1,"Profit"] + trading.loc[row,"Value"]
-            else:
                 trading.loc[row,"Profit"] = trading.loc[row-1,"Profit"] - trading.loc[row,"Value"]
+            else:
+                trading.loc[row,"Profit"] = trading.loc[row-1,"Profit"] + trading.loc[row,"Value"]
     print("OK")
         
     return trading
