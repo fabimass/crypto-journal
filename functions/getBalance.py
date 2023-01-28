@@ -24,6 +24,16 @@ def getBalance(journal, tokens, start_date, end_date):
                     # Found a movement for the token in that date, calculate the new balance
                     foundFlag = False; 
                     for i in records.index: 
+                        # Check for valid operation
+                        if (records[xlsx_columns["operation"]][i] not in zero_operations and 
+                            records[xlsx_columns["operation"]][i] not in add_operations and
+                            records[xlsx_columns["operation"]][i] not in subs_operations ):
+                            print("--------------------------------------------------------------------------")
+                            print(f"ERROR: Invalid operation {records[xlsx_columns['operation']][i]} in line:")
+                            print(records[xlsx_columns["date"]][i], records[xlsx_columns["operation"]][i], records[xlsx_columns["price"]][i], records[xlsx_columns["token1"]][i], records[xlsx_columns["token1_amount"]][i], records[xlsx_columns["token2"]][i], records[xlsx_columns["token2_amount"]][i], records[xlsx_columns["tokenfee"]][i], records[xlsx_columns["tokenfee_amount"]][i])
+                            print("--------------------------------------------------------------------------")
+                            pass
+
                         # Found in token 1
                         if (records[xlsx_columns["token1"]][i] == token):
                             if (records[xlsx_columns["operation"]][i] in zero_operations):
