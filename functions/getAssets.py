@@ -12,9 +12,10 @@ def getAssets(journal):
         print(e)
         print(f"ERROR: Couldn't extract list of tokens")
         exitScript(2)
-    print("OK")
     
     # I need only the unique values, use the filter to remove nan
     assets_list_unique = set(filter(lambda x: x == x , assets_list))
+
+    print(f"Assets detected: {assets_list_unique}")
 
     return assets_list_unique
