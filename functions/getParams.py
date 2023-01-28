@@ -7,7 +7,7 @@ def getParams():
     parser.add_argument("start", help="Start date for the analysis, it should have the format YYYY-MM-DD", action="store")
     parser.add_argument("end", help="End date for the analysis, here you can put a specific date or just use today", action="store")
     parser.add_argument("input", help="Path of the excel file with the transactions", action="store")
-    parser.add_argument("--noprice", help="List of assets that you want to track the balance but not the price, you will separate different assets using a comma", action="store")
+    parser.add_argument("--ignoreprice", help="List of assets that you want to track the balance but not the price, you will separate different assets using a comma", action="store")
     args = parser.parse_args()
 
     # Get start parameter
@@ -33,13 +33,13 @@ def getParams():
     arg_input = args.input
 
     # Get noprice parameter
-    if (args.noprice):
+    if (args.ignoreprice):
         try:
-            arg_noprice = args.noprice.split(",")
+            arg_ignoreprice = args.ignoreprice.split(",")
         except:
             print("ERROR: Cannot parse the list of assets")
             exitScript(1)
     else:
-        arg_noprice = []
+        arg_ignoreprice = []
 
-    return arg_from, arg_to, arg_input, arg_noprice
+    return arg_from, arg_to, arg_input, arg_ignoreprice

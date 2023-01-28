@@ -12,6 +12,7 @@ def getPrice(tokens, ignore, date_start, date_end):
     # Loop through each of the tokens getting the data from Yahoo Finance
     for token in tokens:
         if( token in ignore):
+            print(f"Ignoring prices for {token}...")
             pass
         else:
             print(f"Getting prices for {token}...")
