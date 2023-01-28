@@ -1,6 +1,7 @@
 from functions.getParams import getParams
 from functions.getPrice import getPrice
 from functions.getInput import getInput
+from functions.getAssets import getAssets
 from functions.getBalance import getBalance
 from functions.getTrades import getTrades
 from functions.joinDataframes import joinDataframes
@@ -9,13 +10,15 @@ from functions.exitScript import exitScript
 
 if __name__ == "__main__":
     # Parse script parameters
-    start_date, end_date, assets_list, input_file, noprice_list = getParams()
-
-    # Create prices table
-    price_df = getPrice(assets_list, noprice_list, start_date, end_date)
+    start_date, end_date, input_file, noprice_list = getParams()
 
     # Read input file
     input_df = getInput(input_file)
+
+    assets_list = getAssets(input_df)
+
+    # Create prices table
+    price_df = getPrice(assets_list, noprice_list, start_date, end_date)
     
     # Calculate balance
     balance_df = getBalance(input_df, assets_list, start_date, end_date)
