@@ -8,6 +8,7 @@ def getParams():
     parser.add_argument("end", help="End date for the analysis, here you can put a specific date or just use today", action="store")
     parser.add_argument("input", help="Path of the excel file with the transactions", action="store")
     parser.add_argument("--ignoreprice", help="List of assets that you want to track the balance but not the price, you will separate different assets using a comma", action="store")
+    parser.add_argument("--suffix", help="This value will be added to each symbol when retrieving the price")
     args = parser.parse_args()
 
     # Get start parameter
@@ -32,7 +33,7 @@ def getParams():
     # Get input parameter
     arg_input = args.input
 
-    # Get noprice parameter
+    # Get ignoreprice parameter
     if (args.ignoreprice):
         try:
             arg_ignoreprice = args.ignoreprice.split(",")
@@ -42,4 +43,14 @@ def getParams():
     else:
         arg_ignoreprice = []
 
-    return arg_from, arg_to, arg_input, arg_ignoreprice
+    # Get suffix parameter
+    if (args.suffix):
+        try:
+            arg_suffix = args.suffix.replace('\\','')
+        except:
+            print("ERROR: Cannot extract the suffix")
+            exitScript(1)
+    else:
+        arg_suffix = None
+
+    return arg_from, arg_to, arg_input, arg_ignoreprice, arg_suffix

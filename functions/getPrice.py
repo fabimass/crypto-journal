@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance as yfin
 from pandas_datareader import data as pdr
 
-def getPrice(tokens, ignore, date_start, date_end):
+def getPrice(tokens, ignore, date_start, date_end, suffix):
     # Prepare dataframe for the prices
     prices_df = pd.DataFrame(columns = ["Date", "High", "Low", "Open", "Close", "Token"])
 
@@ -17,7 +17,10 @@ def getPrice(tokens, ignore, date_start, date_end):
         else:
             print(f"Getting prices for {token}...")
             try:
-                symbol = token + "-USD"
+                if suffix:
+                    symbol = token + suffix
+                else:
+                    symbol = token
                 temp_df = pdr.get_data_yahoo(symbol, start=date_start, end=date_end)
                 temp_df = temp_df.reset_index(level=0)
                 temp_df["Token"] = token

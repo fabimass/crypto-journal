@@ -10,15 +10,16 @@ from functions.exitScript import exitScript
 
 if __name__ == "__main__":
     # Parse script parameters
-    start_date, end_date, input_file, noprice_list = getParams()
-
+    start_date, end_date, input_file, ignoreprice_list, symbol_suffix = getParams()
+    
     # Read input file
     input_df = getInput(input_file)
 
+    # Extract the list of assets
     assets_list = getAssets(input_df)
 
     # Create prices table
-    price_df = getPrice(assets_list, noprice_list, start_date, end_date)
+    price_df = getPrice(assets_list, ignoreprice_list, start_date, end_date, symbol_suffix)
     
     # Calculate balance
     balance_df = getBalance(input_df, assets_list, start_date, end_date)
