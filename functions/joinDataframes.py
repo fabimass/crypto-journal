@@ -5,5 +5,4 @@ def joinDataframes(df1, df2, key1, key2):
     df2["Key"] = df2[key2].astype(str) + "-" + df2["Token"]
     result = pd.merge(df2, df1, how='left')
     del result["Key"]
-    result["Value"] = result["Balance"] * result["Close"]
     return result
