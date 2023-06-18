@@ -7,6 +7,8 @@ from functions.getTrades import getTrades
 from functions.joinDataframes import joinDataframes
 from functions.outputFile import outputFile
 from functions.exitScript import exitScript
+from functions.calculateValue import calculateValue
+from functions.summarize import summarize
 
 if __name__ == "__main__":
     # Parse script parameters
@@ -25,16 +27,21 @@ if __name__ == "__main__":
     balance_df = getBalance(input_df, assets_list, start_date, end_date)
 
     # Join both dataframes
-    joined_df = joinDataframes(price_df, balance_df, "Date", "Date")
-    
-    # Output to csv file
-    outputFile(joined_df.sort_values(["Wallet", "Token", "Date"]), "output/results.csv")
+    daily_df = joinDataframes(price_df, balance_df, "Date", "Date")
+
+    # Having Balance and Price, calculate Value
+    daily_df = calculateValue(daily_df)
 
     # Get trading operations
     trades_df = getTrades(input_df)
 
+    # Calculate summary
+    summary_df = summarize(daily_df, trades_df)
+
     # Output to csv file
+    outputFile(daily_df.sort_values(["Wallet", "Token", "Date"]), "output/daily.csv")
     outputFile(trades_df, "output/trades.csv")
+    outputFile(summary_df, "output/summary.csv")
 
     print("Script executed successfully!!")
     exitScript(0)
