@@ -12,7 +12,7 @@ def summarize(daily_df, trades_df):
 
     # List unique wallets
     wallets = daily_df['Wallet'].unique().tolist()
-    print(wallets)
+
     # Go through each token summarizing the values
     for token in tokens:
         print(f"Summarizing for {token}...")
