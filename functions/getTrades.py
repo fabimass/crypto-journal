@@ -22,13 +22,17 @@ def getTrades(journal):
 
     # Calculate the profit for each operation
     trading = trading.sort_values(["Token", "Date"])
+    trading.reset_index(inplace=True)
+    del trading["index"]
     for row in trading.index:
+        # Checks if it is the very first row or if the token changed
         if(row == 0 or trading.loc[row,"Token"] != trading.loc[row-1,"Token"]):
             print(f"Calculating profits for {trading.loc[row,'Token']}...")
             if (trading.loc[row,"Operation"] == "Buy"):
                 trading.loc[row,"Profit"] = -trading.loc[row,"Value"]
             else:
                 trading.loc[row,"Profit"] = trading.loc[row,"Value"]
+        # If it goes here, it is not the first trade for the token, so previous value needs to be considered for the profit calculation
         else:
             if (trading.loc[row,"Operation"] == "Buy"):
                 trading.loc[row,"Profit"] = trading.loc[row-1,"Profit"] - trading.loc[row,"Value"]
