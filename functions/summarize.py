@@ -1,5 +1,6 @@
 import pandas as pd
 from functions.getFirst import getFirst
+from functions.getLast import getLast
 
 def summarize(daily_df, trades_df):
     # Prepare summary dataframe
@@ -16,13 +17,13 @@ def summarize(daily_df, trades_df):
         print(f"Summarizing for {token}...")
         
         initial_value = 0
+        traded_value = 0
 
         for wallet in wallets:
 
-            # Filter corresponding records
+            # Filter corresponding records in the daily dataframe
             filtered_records = daily_df[ (daily_df['Wallet'] == wallet) & (daily_df['Token'] == token) ]
-            if not filtered_records.empty:
-                
+            if not filtered_records.empty:   
                 # Grab initial value
                 temp = getFirst(filtered_records, 'Value', 5)
                 if isinstance(temp, (int, float)):
@@ -30,7 +31,13 @@ def summarize(daily_df, trades_df):
                 else:    
                     initial_value = temp
                     break
+
+        # Filter corresponding records in the trades dataframe
+        filtered_records = trades_df[ (trades_df['Token'] == token) ]
+        if not filtered_records.empty:
+            # Grab traded value
+            traded_value = getLast(filtered_records, 'Profit')
         
-        summary_df.loc[len(summary_df.index)] = [token, initial_value, 0, 0, 0]            
+        summary_df.loc[len(summary_df.index)] = [token, initial_value, 0, traded_value, 0]            
     
     return summary_df
