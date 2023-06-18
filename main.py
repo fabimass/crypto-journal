@@ -9,6 +9,7 @@ from functions.outputFile import outputFile
 from functions.exitScript import exitScript
 from functions.calculateValue import calculateValue
 from functions.summarize import summarize
+import pathlib
 
 if __name__ == "__main__":
     # Parse script parameters
@@ -39,6 +40,7 @@ if __name__ == "__main__":
     summary_df = summarize(daily_df, trades_df)
 
     # Output to csv file
+    pathlib.Path(__file__).parent.joinpath("output").mkdir()
     outputFile(daily_df.sort_values(["Wallet", "Token", "Date"]), "output/daily.csv")
     outputFile(trades_df, "output/trades.csv")
     outputFile(summary_df, "output/summary.csv")
