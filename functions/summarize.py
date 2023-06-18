@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from functions.getFirst import getFirst
 from functions.getLast import getLast
 
@@ -46,6 +47,13 @@ def summarize(daily_df, trades_df):
             # Grab traded value
             traded_value = getLast(filtered_records, 'Profit')
         
-        summary_df.loc[len(summary_df.index)] = [token, initial_value, current_value, traded_value, 0]            
+        summary_df.loc[len(summary_df.index)] = [token, initial_value, current_value, traded_value, 0]
+
+    # Calculate overall profit
+    for index, row in summary_df.iterrows():
+        if row["Initial_Value"] == '?' or row["Current_Value"] == '?' or row["Traded_Value"] == '?':
+            summary_df.loc[index,"Profit"] = '?'
+        else:
+            summary_df.loc[index,"Profit"] = row["Current_Value"] - row["Initial_Value"] + row["Traded_Value"]           
     
     return summary_df
