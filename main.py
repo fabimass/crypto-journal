@@ -40,7 +40,8 @@ if __name__ == "__main__":
     summary_df = summarize(daily_df, trades_df)
 
     # Output to csv file
-    pathlib.Path(__file__).parent.joinpath("output").mkdir()
+    if not pathlib.Path(__file__).is_dir():
+        pathlib.Path(__file__).parent.joinpath("output").mkdir()
     outputFile(daily_df.sort_values(["Wallet", "Token", "Date"]), "output/daily.csv")
     outputFile(trades_df, "output/trades.csv")
     outputFile(summary_df, "output/summary.csv")
