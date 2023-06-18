@@ -18,6 +18,7 @@ def summarize(daily_df, trades_df):
         
         initial_value = 0
         traded_value = 0
+        current_value = 0
 
         for wallet in wallets:
 
@@ -31,6 +32,13 @@ def summarize(daily_df, trades_df):
                 else:    
                     initial_value = temp
                     break
+                # Grab current value
+                temp = getLast(filtered_records, 'Value', 5)
+                if isinstance(temp, (int, float)):
+                    current_value += temp
+                else:    
+                    current_value = temp
+                    break
 
         # Filter corresponding records in the trades dataframe
         filtered_records = trades_df[ (trades_df['Token'] == token) ]
@@ -38,6 +46,6 @@ def summarize(daily_df, trades_df):
             # Grab traded value
             traded_value = getLast(filtered_records, 'Profit')
         
-        summary_df.loc[len(summary_df.index)] = [token, initial_value, 0, traded_value, 0]            
+        summary_df.loc[len(summary_df.index)] = [token, initial_value, current_value, traded_value, 0]            
     
     return summary_df
