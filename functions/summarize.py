@@ -12,7 +12,7 @@ def summarize(daily_df, trades_df):
 
     # List unique wallets
     wallets = daily_df['Wallet'].unique().tolist()
-
+    print(wallets)
     # Go through each token summarizing the values
     for token in tokens:
         print(f"Summarizing for {token}...")
@@ -22,24 +22,23 @@ def summarize(daily_df, trades_df):
         current_value = 0
 
         for wallet in wallets:
-
             # Filter corresponding records in the daily dataframe
             filtered_records = daily_df[ (daily_df['Wallet'] == wallet) & (daily_df['Token'] == token) ]
             if not filtered_records.empty:   
                 # Grab initial value
                 temp = getFirst(filtered_records, 'Value', 5)
-                if isinstance(temp, (int, float)):
-                    initial_value += temp
-                else:    
-                    initial_value = temp
-                    break
+                if isinstance(initial_value, (int, float)):
+                    if isinstance(temp, (int, float)):
+                        initial_value += temp
+                    else:    
+                        initial_value = temp                  
                 # Grab current value
                 temp = getLast(filtered_records, 'Value', 5)
-                if isinstance(temp, (int, float)):
-                    current_value += temp
-                else:    
-                    current_value = temp
-                    break
+                if isinstance(current_value, (int, float)):
+                    if isinstance(temp, (int, float)):
+                        current_value += temp
+                    else:    
+                        current_value = temp   
 
         # Filter corresponding records in the trades dataframe
         filtered_records = trades_df[ (trades_df['Token'] == token) ]
