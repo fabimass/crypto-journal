@@ -26,4 +26,7 @@ Example:
 python main.py 2023-01-01 today ./input/input.xlsx --ignoreprice USD --suffix \-USD
 ```
 
-The script will create 2 csv files in the `output/` folder: `results.csv` contains the daily balance and price for each of your assets in each of your wallets, and `trades.csv` is a summary of the buy/sell transactions where you can find the cumulative profits.
+The script will create 3 csv files in the `output/` folder:
+- `daily.csv` contains the daily balance, price and value for each of your assets in each of your wallets
+- `trades.csv` is a summary of the buy/sell transactions where you can find the cumulative profits
+- `summary.csv` lists the main metrics for each of your assets
