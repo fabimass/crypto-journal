@@ -26,13 +26,14 @@ def getPrice(tokens, ignore, corrector, date_start, date_end, suffix):
                 temp_df["Token"] = token
                 del temp_df["Volume"]
                 del temp_df["Adj Close"]
-                prices_df = pd.concat([prices_df, temp_df])
+                print(temp_df)
                 if token in corrector:
                     print(f"Price will be multiplied by {corrector[token]}...")
-                    prices_df['High'] = prices_df['High'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
-                    prices_df['Low'] = prices_df['Low'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
-                    prices_df['Open'] = prices_df['Open'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
-                    prices_df['Close'] = prices_df['Close'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
+                    temp_df['High'] = temp_df['High'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
+                    temp_df['Low'] = temp_df['Low'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
+                    temp_df['Open'] = temp_df['Open'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
+                    temp_df['Close'] = temp_df['Close'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
+                prices_df = pd.concat([prices_df, temp_df])
                 print("OK")
             except:
                 print(f"ERROR: Something went wrong...")
