@@ -6,6 +6,7 @@ from functions.getLast import getLast
 def summarize(daily_df, trades_df):
     # Prepare summary dataframe
     summary_df = pd.DataFrame(columns = ["Token", "Initial_Value", "Current_Value", "Traded_Value", "Profit"])
+    summary_wallet_df = pd.DataFrame(columns = ["Wallet", "Token", "Current_Value", "Current_Balance"])
 
     # List unique tokens
     tokens = daily_df['Token'].unique().tolist()
@@ -39,6 +40,8 @@ def summarize(daily_df, trades_df):
                         current_value += temp
                     else:    
                         current_value = temp   
+                # Add record in the wallet summary
+                summary_wallet_df.loc[len(summary_wallet_df.index)] = [wallet, token, getLast(filtered_records, 'Value', 5), getLast(filtered_records, 'Balance', 5)]
 
         # Filter corresponding records in the trades dataframe
         filtered_records = trades_df[ (trades_df['Token'] == token) ]
@@ -55,4 +58,4 @@ def summarize(daily_df, trades_df):
         else:
             summary_df.loc[index,"Profit"] = row["Current_Value"] - row["Initial_Value"] + row["Traded_Value"]           
     
-    return summary_df
+    return summary_df, summary_wallet_df

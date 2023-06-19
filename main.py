@@ -37,7 +37,7 @@ if __name__ == "__main__":
     trades_df = getTrades(input_df)
 
     # Calculate summary
-    summary_df = summarize(daily_df, trades_df)
+    summary_df, summary_wallet_df = summarize(daily_df, trades_df)
 
     # Output to csv file
     if not pathlib.Path(__file__).parent.joinpath("output").is_dir():
@@ -45,6 +45,7 @@ if __name__ == "__main__":
     outputFile(daily_df.sort_values(["Wallet", "Token", "Date"]), "output/daily.csv")
     outputFile(trades_df, "output/trades.csv")
     outputFile(summary_df, "output/summary.csv")
+    outputFile(summary_wallet_df, "output/summary_wallet.csv")
 
     print("Script executed successfully!!")
     exitScript(0)
