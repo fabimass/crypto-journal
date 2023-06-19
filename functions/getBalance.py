@@ -1,12 +1,8 @@
 import pandas as pd
 import datetime
-from vars import xlsx_columns
+from vars import xlsx_columns, zero_operations, add_operations, subs_operations
 
 def getBalance(journal, tokens, start_date, end_date):
-    # Possible operations
-    zero_operations = {"Start"} # Used to indicate the initial balance
-    add_operations = {"Buy", "Deposit", "Staking", "Profits", "Dividends"} # These operations increment token1 balance 
-    subs_operations = {"Sell", "Withdrawal"} # These operations decrement token1 balance
     
     # Prepare dataframe for balances
     balance = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Balance"])
