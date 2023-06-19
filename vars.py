@@ -14,4 +14,6 @@ xlsx_columns = {
 # Possible operations
 zero_operations = {"Start"} # Used to indicate the initial balance
 add_operations = {"Buy", "Deposit", "Staking", "Airdrop", "Profits", "Dividends", "Debt"} # These operations increment token1 balance 
-subs_operations = {"Sell", "Withdrawal"} # These operations decrement token1 balance    
+subs_operations = {"Sell", "Withdrawal"} # These operations decrement token1 balance 
+trade_operations = {"Buy", "Sell"}
+other_operations = {"Staking", "Airdrop", "Profits", "Dividends", "Debt"}

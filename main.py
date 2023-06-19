@@ -4,6 +4,7 @@ from functions.getInput import getInput
 from functions.getAssets import getAssets
 from functions.getBalance import getBalance
 from functions.getTrades import getTrades
+from functions.getOther import getOther
 from functions.joinDataframes import joinDataframes
 from functions.outputFile import outputFile
 from functions.exitScript import exitScript
@@ -36,6 +37,9 @@ if __name__ == "__main__":
     # Get trading operations
     trades_df = getTrades(input_df)
 
+    # Get other operations
+    other_df = getOther(input_df)
+
     # Calculate summary
     summary_df, summary_wallet_df = summarize(daily_df, trades_df)
 
@@ -46,6 +50,7 @@ if __name__ == "__main__":
     outputFile(trades_df, "output/trades.csv")
     outputFile(summary_df, "output/summary.csv")
     outputFile(summary_wallet_df, "output/summary_wallet.csv")
+    outputFile(other_df, "output/others.csv")
 
     print("Script executed successfully!!")
     exitScript(0)
