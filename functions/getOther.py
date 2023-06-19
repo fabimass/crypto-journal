@@ -3,7 +3,7 @@ from vars import xlsx_columns, other_operations
 
 def getOther(journal):
     # Prepare dataframe for others
-    trading = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Operation", "Amount"])
+    trading = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Operation", "Amount", "Origin"])
 
     # Go through the journal file detecting the other transactions
     for wallet in journal:
@@ -14,7 +14,8 @@ def getOther(journal):
                 token = journal[wallet][xlsx_columns["token1"]][i]
                 operation = journal[wallet][xlsx_columns["operation"]][i]
                 amount = journal[wallet][xlsx_columns["token1_amount"]][i]
-                trading.loc[len(trading.index)] = [date, token, wallet, operation, amount]
+                origin = journal[wallet][xlsx_columns["token2"]][i]
+                trading.loc[len(trading.index)] = [date, token, wallet, operation, amount, origin]
         print("OK")
 
     trading = trading.sort_values(["Token", "Date"])
