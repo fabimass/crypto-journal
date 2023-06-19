@@ -2,7 +2,7 @@ import pandas as pd
 import yfinance as yfin
 from pandas_datareader import data as pdr
 
-def getPrice(tokens, ignore, date_start, date_end, suffix):
+def getPrice(tokens, ignore, corrector, date_start, date_end, suffix):
     # Prepare dataframe for the prices
     prices_df = pd.DataFrame(columns = ["Date", "High", "Low", "Open", "Close", "Token"])
 
@@ -11,7 +11,7 @@ def getPrice(tokens, ignore, date_start, date_end, suffix):
 
     # Loop through each of the tokens getting the data from Yahoo Finance
     for token in tokens:
-        if( token in ignore):
+        if token in ignore:
             print(f"Ignoring prices for {token}...")
             pass
         else:
@@ -27,6 +27,11 @@ def getPrice(tokens, ignore, date_start, date_end, suffix):
                 del temp_df["Volume"]
                 del temp_df["Adj Close"]
                 prices_df = pd.concat([prices_df, temp_df])
+                if token in corrector:
+                    prices_df['High'] = prices_df['High'].apply(lambda x: x * corrector[token] if pd.notnull(x) else x)
+                    prices_df['Low'] = prices_df['Low'].apply(lambda x: x * corrector[token] if pd.notnull(x) else x)
+                    prices_df['Open'] = prices_df['Open'].apply(lambda x: x * corrector[token] if pd.notnull(x) else x)
+                    prices_df['Close'] = prices_df['Close'].apply(lambda x: x * corrector[token] if pd.notnull(x) else x)
                 print("OK")
             except:
                 print(f"ERROR: Something went wrong...")
