@@ -10,6 +10,10 @@ def getBalance(journal, tokens, start_date, end_date):
     # Go day by day calculating the balance for each token in each wallet
     delta = datetime.timedelta(days=1)
     for wallet in journal:
+        # Replace empty values by zero
+        journal[wallet][xlsx_columns['token1_amount']] = journal[wallet][xlsx_columns['token1_amount']].fillna(0)
+        journal[wallet][xlsx_columns['token2_amount']] = journal[wallet][xlsx_columns['token2_amount']].fillna(0)
+        journal[wallet][xlsx_columns['tokenfee_amount']] = journal[wallet][xlsx_columns['tokenfee_amount']].fillna(0)
         for token in tokens:
             print(f"Calculating balance for {token} in {wallet}...")
             date_i = datetime.datetime.strptime(start_date, '%Y-%m-%d')
