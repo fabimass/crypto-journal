@@ -13,7 +13,7 @@ import pathlib
 
 if __name__ == "__main__":
     # Parse script parameters
-    start_date, end_date, input_file, ignoreprice_list, symbol_suffix = getParams()
+    start_date, end_date, input_file, ignoreprice_list, symbol_suffix, price_corrector = getParams()
     
     # Read input file
     input_df = getInput(input_file)
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     assets_list = getAssets(input_df)
 
     # Create prices table
-    price_df = getPrice(assets_list, ignoreprice_list, start_date, end_date, symbol_suffix)
+    price_df = getPrice(assets_list, ignoreprice_list, price_corrector, start_date, end_date, symbol_suffix)
     
     # Calculate balance
     balance_df = getBalance(input_df, assets_list, start_date, end_date)
