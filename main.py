@@ -35,7 +35,7 @@ if __name__ == "__main__":
     daily_df = calculateValue(daily_df)
 
     # Get trading operations
-    trades_df = getTrades(input_df, symbol_suffix, price_df)
+    trades_df = getTrades(input_df, ignoreprice_list, symbol_suffix, price_df)
 
     # Get other operations
     other_df = getOther(input_df)
