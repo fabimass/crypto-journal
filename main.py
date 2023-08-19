@@ -29,7 +29,7 @@ if __name__ == "__main__":
     balance_df = getBalance(input_df, assets_list, start_date, end_date)
 
     # Join both dataframes
-    daily_df = joinDataframes(price_df, balance_df, "Date", "Date")
+    daily_df = joinDataframes(price_df, balance_df)
 
     # Having Balance and Price, calculate Value
     daily_df = calculateValue(daily_df)
