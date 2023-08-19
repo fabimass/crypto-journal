@@ -26,8 +26,8 @@ if __name__ == "__main__":
     price_df = getPrice(assets_list, ignoreprice_list, price_corrector, start_date, end_date, symbol_suffix)
     
     # Calculate balance
-    balance_df = getBalance(input_df, assets_list, start_date, end_date)
-
+    balance_df = getBalance(input_df, assets_list, symbol_suffix, start_date, end_date)
+    
     # Join both dataframes
     daily_df = joinDataframes(price_df, balance_df)
 

@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 from vars import xlsx_columns, zero_operations, add_operations, subs_operations
 
-def getBalance(journal, tokens, start_date, end_date):
+def getBalance(journal, tokens, suffixes, start_date, end_date):
     
     # Prepare dataframe for balances
     balance = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Balance"])
@@ -86,5 +86,14 @@ def getBalance(journal, tokens, start_date, end_date):
                 
                 date_i += delta
             print("OK")
-        
-    return balance
+
+    # Inject suffixes
+    if suffixes:
+        balance_final = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Balance", "Suffix"])
+        for suffix in suffixes:
+            balance_copy = balance.copy()
+            balance_copy["Suffix"] = suffix
+            balance_final = pd.concat([balance_final, balance_copy])
+        return balance_final
+    else: 
+        return balance
