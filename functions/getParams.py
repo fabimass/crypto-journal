@@ -47,7 +47,7 @@ def getParams():
     # Get suffix parameter
     if (args.suffix):
         try:
-            arg_suffix = args.suffix.replace('\\','')
+            arg_suffix = args.suffix.replace('\\','').split(",")
         except:
             print("ERROR: Cannot extract the suffix")
             exitScript(1)
