@@ -17,3 +17,11 @@ add_operations = {"Buy", "Deposit", "Staking", "Airdrop", "Profits", "Dividends"
 subs_operations = {"Sell", "Withdrawal"} # These operations decrement token1 balance 
 trade_operations = {"Buy", "Sell"}
 other_operations = {"Staking", "Airdrop", "Profits", "Dividends", "Debt"}
+
+# Map tokens with suffixes
+token_suffixes = {
+    "ARS": ".BA",
+    "USD": "D.BA",
+    "USDT": "-USD",
+    "BUSD": "-USD"
+}

@@ -1,17 +1,5 @@
 import pandas as pd
-from vars import xlsx_columns, trade_operations
-
-def find_closest_key(dictionary, target_value):
-    closest_key = None
-    min_difference = float('inf')  # Initialize with positive infinity
-
-    for key, value in dictionary.items():
-        difference = abs(value - target_value)
-        if difference < min_difference and value != 0:
-            min_difference = difference
-            closest_key = key
-
-    return closest_key
+from vars import xlsx_columns, trade_operations, token_suffixes
 
 def getTrades(journal, ignore_list, suffixes, prices):
     # Prepare dataframe for trades
@@ -22,28 +10,30 @@ def getTrades(journal, ignore_list, suffixes, prices):
         print(f"Detecting trade operations in {wallet}...")
         for i in journal[wallet].index:
             if(journal[wallet][xlsx_columns["operation"]][i] in trade_operations and journal[wallet][xlsx_columns["token1"]][i] not in ignore_list):
+                
                 if suffixes:
-                    temp_value = journal[wallet][xlsx_columns["price"]][i]
-                    values = {}
+                    close_prices = {}
                     for suffix in suffixes:
                         prices_row = prices[(prices['Date'] == journal[wallet][xlsx_columns["date"]][i]) & (prices['Token'] == journal[wallet][xlsx_columns["token1"]][i]) & (prices['Suffix'] == suffix)]
-                        values[suffix] = prices_row.iloc[0]['Close'] if not prices_row.empty else 0
-                    closest_key = find_closest_key(values, temp_value)
+                        close_prices[suffix] = prices_row.iloc[0]['Close'] if not prices_row.empty else -1
+                    
                     for suffix in suffixes:
                         date = journal[wallet][xlsx_columns["date"]][i]
                         token = journal[wallet][xlsx_columns["token1"]][i]
                         operation = journal[wallet][xlsx_columns["operation"]][i]
-                        amount = journal[wallet][xlsx_columns["token1_amount"]][i]    
-                        if suffix == closest_key:
+                        amount = journal[wallet][xlsx_columns["token1_amount"]][i]
+                          
+                        if suffix == token_suffixes[journal[wallet][xlsx_columns["token2"]][i]]:
                             price = journal[wallet][xlsx_columns["price"]][i]
                             value = journal[wallet][xlsx_columns["token2_amount"]][i]
                         else:
-                            prices_row = prices[(prices['Date'] == journal[wallet][xlsx_columns["date"]][i]) & (prices['Token'] == journal[wallet][xlsx_columns["token1"]][i]) & (prices['Suffix'] == suffix)]
-                            close1 = prices_row.iloc[0]["Close"] if not prices_row.empty else None
-                            prices_row = prices[(prices['Date'] == journal[wallet][xlsx_columns["date"]][i]) & (prices['Token'] == journal[wallet][xlsx_columns["token1"]][i]) & (prices['Suffix'] == closest_key)]
-                            close2 = prices_row.iloc[0]["Close"] if not prices_row.empty else None
-                            price = journal[wallet][xlsx_columns["price"]][i] * close1 / close2 if (close1 and close2) else 0
-                            value = price * amount if price else 0
+                            if close_prices[token_suffixes[journal[wallet][xlsx_columns["token2"]][i]]] != -1 and close_prices[suffix] != -1:
+                                price = journal[wallet][xlsx_columns["price"]][i] * close_prices[suffix] / close_prices[token_suffixes[journal[wallet][xlsx_columns["token2"]][i]]]
+                                value = price * amount
+                            else:
+                                price = '?'
+                                value = 0
+
                         profit = 0
                         trading.loc[len(trading.index)] = [date, token, wallet, suffix, operation, amount, price, value, profit]
 
