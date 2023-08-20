@@ -1,9 +1,9 @@
 import pandas as pd
-from vars import xlsx_columns, other_operations
+from vars import xlsx_columns, other_operations, token_suffixes
 
 def getOther(journal):
     # Prepare dataframe for others
-    trading = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Operation", "Amount", "Origin"])
+    trading = pd.DataFrame(columns = ["Date", "Token", "Wallet", "Operation", "Amount", "Origin", "Suffix"])
 
     # Go through the journal file detecting the other transactions
     for wallet in journal:
@@ -15,7 +15,8 @@ def getOther(journal):
                 operation = journal[wallet][xlsx_columns["operation"]][i]
                 amount = journal[wallet][xlsx_columns["token1_amount"]][i]
                 origin = journal[wallet][xlsx_columns["token2"]][i]
-                trading.loc[len(trading.index)] = [date, token, wallet, operation, amount, origin]
+                suffix = token_suffixes[token]
+                trading.loc[len(trading.index)] = [date, token, wallet, operation, amount, origin, suffix]
         print("OK")
 
     trading = trading.sort_values(["Token", "Date"])
