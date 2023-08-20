@@ -31,8 +31,8 @@ def getTrades(journal, ignore_list, suffixes, prices):
                                 price = journal[wallet][xlsx_columns["price"]][i] * close_prices[suffix] / close_prices[token_suffixes[journal[wallet][xlsx_columns["token2"]][i]]]
                                 value = price * amount
                             else:
-                                price = '?'
-                                value = 0
+                                price = None
+                                value = None
 
                         profit = 0
                         trading.loc[len(trading.index)] = [date, token, wallet, suffix, operation, amount, price, value, profit]
@@ -58,13 +58,17 @@ def getTrades(journal, ignore_list, suffixes, prices):
         # Checks if it is the very first row or if the token changed
         if(row == 0 or trading.loc[row,"Token"] != trading.loc[row-1,"Token"] or trading.loc[row,"Suffix"] != trading.loc[row-1,"Suffix"]):
             print(f"Calculating profits for {trading.loc[row,'Token']}{trading.loc[row,'Suffix']}...")
-            if (trading.loc[row,"Operation"] == "Buy"):
+            if (trading.loc[row,"Value"] is None):
+                trading.loc[row,"Profit"] = None
+            elif (trading.loc[row,"Operation"] == "Buy"):
                 trading.loc[row,"Profit"] = -trading.loc[row,"Value"]
             else:
                 trading.loc[row,"Profit"] = trading.loc[row,"Value"]
         # If it goes here, it is not the first trade for the token, so previous value needs to be considered for the profit calculation
         else:
-            if (trading.loc[row,"Operation"] == "Buy"):
+            if (trading.loc[row,"Value"] is None):
+                trading.loc[row,"Profit"] = None
+            elif (trading.loc[row,"Operation"] == "Buy"):
                 trading.loc[row,"Profit"] = trading.loc[row-1,"Profit"] - trading.loc[row,"Value"]
             else:
                 trading.loc[row,"Profit"] = trading.loc[row-1,"Profit"] + trading.loc[row,"Value"]

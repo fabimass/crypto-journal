@@ -7,10 +7,8 @@ def getFirst(rows, column, limit=-1):
     for index, row in rows.iterrows():          
         if atempt < limit:
             if not np.isnan(row[column]):
-                value = row[column]
-                break
-            atempt += 1          
+                return row[column]
+            atempt += 1
         else:
-            value = '?'
-            break
-    return value
+            break          
+    return '?'
