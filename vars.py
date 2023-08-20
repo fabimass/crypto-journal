@@ -25,3 +25,9 @@ token_suffixes = {
     "USDT": "-USD",
     "BUSD": "-USD"
 }
+
+# Price correctors
+correctors = {
+    "DNC2O.BA": 0.01,
+    "MRCLO.BA": 0.01
+}

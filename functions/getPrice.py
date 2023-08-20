@@ -1,8 +1,9 @@
 import pandas as pd
 import yfinance as yfin
 from pandas_datareader import data as pdr
+from vars import correctors
 
-def getPrice(tokens, ignore, corrector, date_start, date_end, suffixes):
+def getPrice(tokens, ignore, date_start, date_end, suffixes):
     # Prepare dataframe for the prices
     prices_df = pd.DataFrame(columns = ["Date", "High", "Low", "Open", "Close", "Token", "Suffix"])
 
@@ -33,15 +34,15 @@ def getPrice(tokens, ignore, corrector, date_start, date_end, suffixes):
             del temp_df["Volume"]
             del temp_df["Adj Close"]
             print(temp_df)
-            if token in corrector:
-                print(f"Price will be multiplied by {corrector[token]}...")
-                temp_df['High'] = temp_df['High'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
-                temp_df['Low'] = temp_df['Low'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
-                temp_df['Open'] = temp_df['Open'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
-                temp_df['Close'] = temp_df['Close'].apply(lambda x: x * float(corrector[token]) if pd.notnull(x) else x)
+            if symbol["symbol"] in list(correctors.keys()):
+                print(f"Price will be multiplied by {correctors[symbol['symbol']]}...")
+                temp_df['High'] = temp_df['High'].apply(lambda x: x * float(correctors[symbol["symbol"]]) if pd.notnull(x) else x)
+                temp_df['Low'] = temp_df['Low'].apply(lambda x: x * float(correctors[symbol["symbol"]]) if pd.notnull(x) else x)
+                temp_df['Open'] = temp_df['Open'].apply(lambda x: x * float(correctors[symbol["symbol"]]) if pd.notnull(x) else x)
+                temp_df['Close'] = temp_df['Close'].apply(lambda x: x * float(correctors[symbol["symbol"]]) if pd.notnull(x) else x)
             prices_df = pd.concat([prices_df, temp_df])
             print("OK")
-        except:
+        except Exception as e:
             print(f"ERROR: Something went wrong...")
 
     return prices_df

@@ -17,9 +17,8 @@ Once you have your excel file ready, you will run the script specifying the foll
 - `start`: the start date for the analysis, it should have the format _YYYY-MM-DD_
 - `end`: the end date, here you can put a specific date or just use _today_
 - `input`: the path of the excel file (this allows you to move the file to wherever you find more convenient)
-- `--ignoreprice` (Optional): list of assets that you don't want to track the prices for, separate several assets by using a comma
-- `--correctprice` (Optional): list of assets for which you want to apply a correction factor to the price, the nomenclature is _token~factor_, you will separate different assets using a comma
-- `--suffix` (Optional): you can indicate a suffix that will be added to each symbol when retrieving its price, use \ to escape special characters
+- `--ignoreprice` (Optional): list of assets that you don't want to track the prices for, separate several values by using a comma
+- `--suffix` (Optional): you can indicate a suffix that will be added to each symbol when retrieving its price, use \ to escape special characters, separate several values by using a comma
 
 Example:
 

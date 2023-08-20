@@ -9,7 +9,6 @@ def getParams():
     parser.add_argument("input", help="Path of the excel file with the transactions", action="store")
     parser.add_argument("--ignoreprice", help="List of assets that you want to track the balance but not the price, you will separate different assets using a comma", action="store")
     parser.add_argument("--suffix", help="This value will be added to each symbol when retrieving the price")
-    parser.add_argument("--correctprice", help="List of assets for which you want to apply a correction factor to the price, the nomenclature is token~factor, you will separate different assets using a comma", action="store")
     args = parser.parse_args()
 
     # Get start parameter
@@ -54,17 +53,4 @@ def getParams():
     else:
         arg_suffix = None
 
-    # Get correctprice parameter
-    if (args.correctprice):
-        try:
-            arg_corrector = {}
-            temp = args.correctprice.split(",")
-            for keyvalue in temp:
-                arg_corrector[keyvalue.split("~")[0]] = keyvalue.split("~")[1]
-        except:
-            print("ERROR: Cannot parse the list of assets")
-            exitScript(1)
-    else:
-        arg_corrector = {}
-
-    return arg_from, arg_to, arg_input, arg_ignoreprice, arg_suffix, arg_corrector
+    return arg_from, arg_to, arg_input, arg_ignoreprice, arg_suffix
